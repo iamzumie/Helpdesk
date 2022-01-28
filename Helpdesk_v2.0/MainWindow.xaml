@@ -1,0 +1,49 @@
+﻿<Window x:Class="Helpdesk_v3._0.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:Helpdesk_v3._0"
+        mc:Ignorable="d"
+		Title="Tectum Group Helpdesk v3.1"
+		TextBlock.TextAlignment="Center"
+		Background="#FFABABAB"
+		Height="650"
+		Width="800">
+
+	<!-- Menu -->
+	<Grid x:Name="grdMain">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="21"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
+		</Grid.RowDefinitions>
+
+		<DockPanel LastChildFill="True">
+			<Menu DockPanel.Dock="Top">
+
+				<!-- File -->
+				<MenuItem Header="_File">
+					<MenuItem Header="Exit"
+							  Click="MenuItem_Click" />
+				</MenuItem>
+
+				<!-- Persoon -->
+				<MenuItem Header="_Persoon">
+					<MenuItem Header="Toevoegen"
+							  x:Name="mnuEployeeAdd"
+							  Click="mnuEployeeAdd_Click" />
+					<MenuItem Header="Lijst"
+							  x:Name="mnuEmployeeLijst"
+							  Click="mnuEmployeeLijst_Click" />
+				</MenuItem>
+
+				<MenuItem Header="Vestiging">
+					<MenuItem Header="Lijst"
+							  x:Name="mnuVestigingLijst"
+							  Click="mnuVestigingLijst_Click" />
+				</MenuItem>
+			</Menu>
+		</DockPanel>
+	</Grid>
+</Window>

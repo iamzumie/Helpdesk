@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="Helpdesk_v2._0.ucEmployees"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Helpdesk_v2._0"
+             mc:Ignorable="d"
+			 Background="#FFABABAB"
+             d:DesignHeight="600" d:DesignWidth="800"
+			 Loaded="UserControl_Loaded">
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"></ColumnDefinition>
+			<ColumnDefinition Width="auto"></ColumnDefinition>
+			<ColumnDefinition Width="auto"></ColumnDefinition>
+			<ColumnDefinition Width="auto"></ColumnDefinition>
+			<ColumnDefinition Width="*"></ColumnDefinition>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="20"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
+			<RowDefinition Height="*"></RowDefinition>
+		</Grid.RowDefinitions>
+
+		<Label Grid.Column="1"
+			   Grid.Row="1"
+			   Margin="5,5,0,0">Naam</Label>
+		
+		<TextBox Width="550"
+				 Grid.Column="2"
+				 Height="25"
+				 HorizontalAlignment="Left"
+				 TextAlignment="Left"
+				 Grid.Row="1"
+				 Margin="5"
+				 x:Name="txtSearch"/>
+
+		<Button Content="Zoek"
+				Width="75"
+				HorizontalAlignment="Left"
+				Height="25"
+				x:Name="btnZoek"
+				Grid.Column="3"
+				Grid.Row="1"
+				Margin="5"
+				IsDefault="True"
+				Click="btnZoek_Click" />
+
+		<DataGrid Grid.Row="2"
+				  Grid.Column="1"
+				  Grid.ColumnSpan="3"
+				  Margin="5"
+				  Height="475"
+				  FontSize="11"
+				  Width="700"
+				  HorizontalGridLinesBrush="LightGray"
+				  VerticalGridLinesBrush="LightGray"
+				  HorizontalAlignment="left"
+				  x:Name="dgResults">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Name"
+									Binding="{Binding Name}" />
+				<DataGridTextColumn Header="Gender"
+									Binding="{Binding Gender}" />
+				<DataGridTextColumn Header="Job Title"
+									Binding="{Binding JobTitle}" />
+				<DataGridTextColumn Header="Loginnaam"
+									Binding="{Binding Login_naam}" />
+				<DataGridTextColumn Header="Email address"
+									Binding="{Binding EmailAddress}" />
+			</DataGrid.Columns>
+		</DataGrid>
+	</Grid>
+</UserControl>
