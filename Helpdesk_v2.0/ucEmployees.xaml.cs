@@ -37,6 +37,57 @@ namespace Helpdesk_v2._0
             public string JobTitle { get; set; }
         }
 
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            txtSearch.Focus();
+
+            string Q = "select top 100 * from Person.Person p inner join Person.EmailAddress on p.BusinessEntityID = EmailAddress.BusinessEntityID inner join HumanResources.Employee e on e.BusinessEntityID = p.BusinessEntityID Order by FirstName, LastName asc";
+            LoadDataGrid(Q);
+        }
+
+        // When you press the Search button
+        private void btnZoek_Click(object sender, RoutedEventArgs e)
+        {
+            string Q = "select top 100 * from Person.Person p inner join Person.EmailAddress on p.BusinessEntityID = EmailAddress.BusinessEntityID inner join HumanResources.Employee e on e.BusinessEntityID = p.BusinessEntityID WHERE FirstName LIKE '%' + @FirstName + '%' Order by FirstName, LastName asc";
+            LoadDataGrid(Q);
+        }
+
+        private void LoadDataGrid(string Q)
+        {
+            try
+            {
+                this.Cursor = Cursors.Wait;
+                using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
+                {
+                    using (SqlCommand CMD = new SqlCommand(Q, CN))
+                    {
+                        // IF NOTHING IS FILLED IN, FIRSTNAME WON'T GET PASSED
+                        if (txtSearch.Text != null || txtSearch.Text != string.Empty)
+                        {
+                            CMD.Parameters.AddWithValue("@FirstName", txtSearch.Text);
+                        }
+
+                        CN.Open();
+                        using (SqlDataReader DR = CMD.ExecuteReader())
+                        {
+                            // Put the data into the DataGrid
+                            FillDataGrid(DR);
+                        }
+                        CN.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                this.Cursor = null;
+            }
+        }
+
         public void FillDataGrid(SqlDataReader Reader)
         {
             // Clear the DataGrid
@@ -62,65 +113,6 @@ namespace Helpdesk_v2._0
 
                 // Add to the DataGrid
                 dgResults.Items.Add(new MyItem { Name = FullName, Gender = Gender, JobTitle = JobTitle, Login_naam = Login_naam, EmailAddress = Mail });
-            }
-        }
-
-        // When you press the Search button
-        private void btnZoek_Click(object sender, RoutedEventArgs e)
-        {
-            // String
-            string Q = "select top 100 * from Person.Person p inner join Person.EmailAddress on p.BusinessEntityID = EmailAddress.BusinessEntityID inner join HumanResources.Employee e on e.BusinessEntityID = p.BusinessEntityID WHERE FirstName LIKE '%' + @FirstName + '%' Order by FirstName, LastName asc";
-
-            try
-            {
-                using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
-                {
-                    using (SqlCommand CMD = new SqlCommand(Q, CN))
-                    {
-                        CMD.Parameters.AddWithValue("@FirstName", txtSearch.Text);
-
-                        CN.Open();
-                        using (SqlDataReader DR = CMD.ExecuteReader())
-                        {
-                            // Put the data into the DataGrid
-                            FillDataGrid(DR);
-                        }
-                        CN.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            txtSearch.Focus();
-
-            // Latest 100 made users
-            string Q = "select top 100 * from Person.Person p inner join Person.EmailAddress on p.BusinessEntityID = EmailAddress.BusinessEntityID inner join HumanResources.Employee e on e.BusinessEntityID = p.BusinessEntityID Order by FirstName, LastName asc";
-
-            try
-            {
-                using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
-                {
-                    using (SqlCommand CMD = new SqlCommand(Q, CN))
-                    {
-                        CN.Open();
-                        using (SqlDataReader DR = CMD.ExecuteReader())
-                        {
-                            // Put the data into the DataGrid
-                            FillDataGrid(DR);
-                        }
-                        CN.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
             }
         }
     }

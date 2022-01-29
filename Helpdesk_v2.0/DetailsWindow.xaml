@@ -1,0 +1,20 @@
+﻿<Window x:Class="Helpdesk_v2._0.DetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Helpdesk_v2._0"
+        mc:Ignorable="d"
+		Background="White"
+        Title="DetailsWindow" Height="450" Width="400">
+    <StackPanel>
+		<Label Content="id" />
+		<TextBlock Text="{Binding id}"></TextBlock>
+
+		<Label Content="omschrijving" />
+		<TextBlock Text="{Binding omschrijving}"></TextBlock>
+
+		<Label Content="group" />
+		<TextBlock Text="{Binding group}"></TextBlock>
+    </StackPanel>
+</Window>

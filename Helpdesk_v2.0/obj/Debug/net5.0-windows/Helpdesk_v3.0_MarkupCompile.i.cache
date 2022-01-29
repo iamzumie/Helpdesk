@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET5_0;NETCOREAPP
 C:\Users\Administrator\source\repos\Helpdesk_v2.0\Helpdesk_v2.0\App.xaml
-4213524381
+51583179912
 
-9-1497012766
+111878199184
 196-248934542
-MainWindow.xaml;ucAddPersoon.xaml;ucEmployees.xaml;ucVestiging.xaml;
+DetailsWindow.xaml;MainWindow.xaml;ucAddPersoon.xaml;ucEmployees.xaml;ucVestiging.xaml;
 
-True
+False
 

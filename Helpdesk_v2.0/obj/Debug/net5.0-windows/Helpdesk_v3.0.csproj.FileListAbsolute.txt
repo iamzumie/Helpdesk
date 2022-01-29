@@ -48,3 +48,7 @@ C:\Users\Administrator\source\repos\Helpdesk_v2.0\Helpdesk_v2.0\bin\Debug\net5.0
 C:\Users\Administrator\source\repos\Helpdesk_v2.0\Helpdesk_v2.0\bin\Debug\net5.0-windows\tr-TR\Hangfire.Core.resources.dll
 C:\Users\Administrator\source\repos\Helpdesk_v2.0\Helpdesk_v2.0\bin\Debug\net5.0-windows\zh-TW\Hangfire.Core.resources.dll
 C:\Users\Administrator\source\repos\Helpdesk_v2.0\Helpdesk_v2.0\bin\Debug\net5.0-windows\zh\Hangfire.Core.resources.dll
+C:\Users\Administrator\source\repos\Helpdesk_v2.0\Helpdesk_v2.0\obj\Debug\net5.0-windows\DetailsWindow.g.cs
+C:\Users\Administrator\source\repos\Helpdesk_v2.0\Helpdesk_v2.0\obj\Debug\net5.0-windows\DetailsWindow.baml
+C:\Users\Administrator\source\repos\Helpdesk_v2.0\Helpdesk_v2.0\obj\Debug\net5.0-windows\Helpdesk_v2._0.Properties.Resources.resources
+C:\Users\Administrator\source\repos\Helpdesk_v2.0\Helpdesk_v2.0\obj\Debug\net5.0-windows\Helpdesk_v3.0.csproj.GenerateResource.cache

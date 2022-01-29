@@ -35,15 +35,26 @@
 				  Width="700"
 				  HorizontalGridLinesBrush="LightGray"
 				  VerticalGridLinesBrush="LightGray"
-				  HorizontalAlignment="left"
-				  x:Name="dgResults">
+				  x:Name="dgResults"
+				  IsReadOnly="True">
+			<DataGrid.Resources>
+				<Style TargetType="DataGridRow">
+					<EventSetter Event="MouseDoubleClick"
+								 Handler="DataGridRow_MouseDoubleClick" />
+					<EventSetter Event="Selected"
+								 Handler="DataGridRow_Selected" />
+				</Style>
+			</DataGrid.Resources>
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="id"
-									Binding="{Binding id}" />
+									Binding="{Binding id}" 
+									Width="auto"/>
 				<DataGridTextColumn Header="Omschrijving"
-									Binding="{Binding omschrijving}" />
+									Binding="{Binding omschrijving}"
+									Width="*" />
 				<DataGridTextColumn Header="Group"
-									Binding="{Binding group}" />
+									Binding="{Binding group}"
+									Width="*" />
 			</DataGrid.Columns>
 		</DataGrid>
 
@@ -77,8 +88,14 @@
 			<Button x:Name="btnSave"
 					Content="Save" Width="80" Margin="0,2,5,2"
 					Click="btnSave_Click" />
+			<Button x:Name="btnDelete"
+					Content="Delete"
+					Width="80"
+					Margin="0,2,5,2"
+					Click="btnDelete_Click" />
 			<Button x:Name="btnExit"
-					Content="Exit" Width="80" Margin="5,2,15,2"/>
+					Content="Exit" Width="80" Margin="5,2,15,2"
+					Click="btnExit_Click" />
 		</StackPanel>
 	</Grid>
 </UserControl>

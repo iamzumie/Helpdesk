@@ -27,14 +27,15 @@ namespace Helpdesk_v2._0
     public partial class ucVestiging : UserControl
     {
         #region VARIABELEN
-
         DataTable DT;
-        DataRow DR;
+        string Changed = "Insert";
+        Int16 id = 0;
         #endregion
 
         public ucVestiging()
         {
             InitializeComponent();
+            LoadDataGrid();
         }
 
         public class MyItem
@@ -47,29 +48,47 @@ namespace Helpdesk_v2._0
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             txtVestiging.Focus();
+        }
 
-            // Laad vestigingen
+        // Loading up the DataGrid
+        private void LoadDataGrid()
+        {
+            // Laad vestigingen, use of SqlDataReader because of select statement
             string Q = "select * from HumanResources.Department";
 
             try
             {
+                this.Cursor = Cursors.Wait;
                 using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
                 {
                     using (SqlCommand CMD = new SqlCommand(Q, CN))
                     {
-                        CN.Open();
-                        using (SqlDataReader DR = CMD.ExecuteReader())
+                        try
                         {
-                            FillDataGrid(DR);
+                            CN.Open();
+                            using (SqlDataReader DR = CMD.ExecuteReader())
+                            {
+                                FillDataGrid(DR); // Fills the Datagrid with the data from the DataReader
+                            }
+                            CN.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.ToString());
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("There has been a mistake loading the list" + ex.ToString(), "Error", MessageBoxButton.OK);
+            }
+            finally
+            {
+                this.Cursor = null;
             }
         }
+
 
         private void FillDataGrid(SqlDataReader Reader)
         {
@@ -89,25 +108,77 @@ namespace Helpdesk_v2._0
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            string Q = "Insert into HumanResources.Department (Name, GroupName) Values (@Name, @GroupName)";
             try
             {
-                using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
+                if (Changed == "Insert")
                 {
-                    using (SqlCommand CMD = new SqlCommand(Q, CN))
+                    using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
                     {
-                        CN.Open();
-                        using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
+                        using (SqlCommand CMD = new SqlCommand(Properties.Resources.I_Vestiging, CN))
                         {
-                            CMD.Parameters.AddWithValue("@Name", txtVestiging.Text);
-                            CMD.Parameters.AddWithValue("@GroupName", txtGroup.Text);
+                            using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
+                            {
+                                CMD.CommandType = CommandType.StoredProcedure;
+                                CMD.Parameters.AddWithValue("@Name", txtVestiging.Text);
+                                CMD.Parameters.AddWithValue("@GroupName", txtGroup.Text);
+                                CMD.Parameters.AddWithValue("@ReturnValue", 0);
+                                CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
 
-                            DT = new DataTable();
-                            DA.Fill(DT);
+                                DT = new DataTable();
+                                DA.Fill(DT);
 
-                            ControlsLeegmaken();
+                                if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
+                                {
+                                    LoadDataGrid();
+                                    ControlsLeegmaken();
+                                }
+                                else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
+                                {
+                                    MessageBox.Show("The insert has failed due to concurrency issues.");
+                                }
+                                else if ((int)CMD.Parameters["@ReturnValue"].Value == 997)
+                                {
+                                    MessageBox.Show("The insert has failed due to an unexpected error.");
+                                }
+                            }
                         }
-                        CN.Close();
+                    }
+                }
+
+                else if (Changed == "Update")
+                {
+                    using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
+                    {
+                        using (SqlCommand CMD = new SqlCommand(Properties.Resources.U_Vestiging, CN))
+                        {
+                            using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
+                            {
+                                CMD.CommandType = CommandType.StoredProcedure;
+                                CMD.Parameters.AddWithValue("@Name", txtVestiging.Text);
+                                CMD.Parameters.AddWithValue("@GroupName", txtGroup.Text);
+                                CMD.Parameters.AddWithValue("@id", id);
+                                CMD.Parameters.AddWithValue("@ReturnValue", 0);
+                                CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
+
+                                DT = new DataTable();
+                                DA.Fill(DT);
+
+                                if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
+                                {
+                                    LoadDataGrid();
+                                    ControlsLeegmaken();
+                                    Changed = "Insert";
+                                }
+                                else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
+                                {
+                                    MessageBox.Show("The update has failed due to concurrency issues.");
+                                }
+                                else if ((int)CMD.Parameters["@ReturnValue"].Value == 997)
+                                {
+                                    MessageBox.Show("The update has failed due to an unexpected error.");
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -123,6 +194,77 @@ namespace Helpdesk_v2._0
             txtVestiging.Text = string.Empty;
         }
 
+        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                var row = e.Source as DataGridRow;
+                if (row != null)
+                {
+                    var data = row.Item as MyItem;
+
+                    txtVestiging.Text = data.omschrijving;
+                    txtGroup.Text = data.group;
+                    id = Convert.ToInt16(data.id);
+                    Changed = "Update";
+                }
+            }
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            var window = Window.GetWindow(this);
+            window.Close();
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgResults.SelectedItems.Count > 0)
+            {
+                var row = dgResults.SelectedItem as MyItem;
+
+                using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
+                {
+                    using (SqlCommand CMD = new SqlCommand(Properties.Resources.D_Vestiging, CN))
+                    {
+                        using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
+                        {
+                            CMD.CommandType = CommandType.StoredProcedure;
+                            CMD.Parameters.AddWithValue("@DepartmentID", id);
+                            CMD.Parameters.AddWithValue("@ReturnValue", 0);
+                            CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
+
+                            DT = new DataTable();
+                            DA.Fill(DT);
+
+                            if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
+                            {
+                                LoadDataGrid();
+                                ControlsLeegmaken();
+                            }
+                            else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
+                            {
+                                MessageBox.Show("The delete has failed due to concurrency issues.");
+                            }
+                            else if ((int)CMD.Parameters["@ReturnValue"].Value == 997)
+                            {
+                                MessageBox.Show("The delete has failed due to an unexpected error.");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void DataGridRow_Selected(object sender, RoutedEventArgs e)
+        {
+                var row = e.Source as DataGridRow;
+                if (row != null)
+                {
+                    var data = row.Item as MyItem;
+                    id = Convert.ToInt16(data.id);
+                }
+            }
     }
 }
 

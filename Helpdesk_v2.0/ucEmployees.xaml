@@ -57,18 +57,24 @@
 				  HorizontalGridLinesBrush="LightGray"
 				  VerticalGridLinesBrush="LightGray"
 				  HorizontalAlignment="left"
-				  x:Name="dgResults">
+				  x:Name="dgResults"
+				  IsReadOnly="True">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Name"
-									Binding="{Binding Name}" />
+									Binding="{Binding Name}"  
+									Width="auto"/>
 				<DataGridTextColumn Header="Gender"
-									Binding="{Binding Gender}" />
+									Binding="{Binding Gender}"
+									Width="auto" />
 				<DataGridTextColumn Header="Job Title"
-									Binding="{Binding JobTitle}" />
+									Binding="{Binding JobTitle}"
+									Width="auto" />
 				<DataGridTextColumn Header="Loginnaam"
-									Binding="{Binding Login_naam}" />
+									Binding="{Binding Login_naam}"
+									Width="auto" />
 				<DataGridTextColumn Header="Email address"
-									Binding="{Binding EmailAddress}" />
+									Binding="{Binding EmailAddress}"
+									Width="*" />
 			</DataGrid.Columns>
 		</DataGrid>
 	</Grid>
