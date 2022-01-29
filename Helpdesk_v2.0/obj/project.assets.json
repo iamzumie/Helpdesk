@@ -624,26 +624,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\michelc\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\Offline Packages": {},
+    "C:\\Users\\Michel\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\michelc\\Source\\Repos\\Helpdesk\\Helpdesk_v2.0\\Helpdesk_v3.0.csproj",
+      "projectUniqueName": "C:\\Users\\Michel\\Source\\Repos\\Helpdesk\\Helpdesk_v2.0\\Helpdesk_v3.0.csproj",
       "projectName": "Helpdesk_v3.0",
-      "projectPath": "C:\\Users\\michelc\\Source\\Repos\\Helpdesk\\Helpdesk_v2.0\\Helpdesk_v3.0.csproj",
-      "packagesPath": "C:\\Users\\michelc\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\michelc\\Source\\Repos\\Helpdesk\\Helpdesk_v2.0\\obj\\",
+      "projectPath": "C:\\Users\\Michel\\Source\\Repos\\Helpdesk\\Helpdesk_v2.0\\Helpdesk_v3.0.csproj",
+      "packagesPath": "C:\\Users\\Michel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Michel\\Source\\Repos\\Helpdesk\\Helpdesk_v2.0\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\Offline Packages",
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\michelc\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.1.config",
+        "C:\\Users\\Michel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -651,7 +648,6 @@
         "net5.0-windows7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\System\\Components\\Packages": {},
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
@@ -698,7 +694,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.303\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
