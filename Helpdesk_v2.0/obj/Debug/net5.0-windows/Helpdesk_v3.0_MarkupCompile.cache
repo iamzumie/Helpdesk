@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\Michel\Source\Repos\Helpdesk\Helpdesk_v2.0\obj\Debug\net5.0-windows\
+C:\Users\Administrator\source\repos\Helpdesk_v2.0\Helpdesk_v2.0\obj\Debug\net5.0-windows\
 Helpdesk_v2._0
 none
 false
 TRACE;DEBUG;NET;NET5_0;NETCOREAPP
-C:\Users\Michel\Source\Repos\Helpdesk\Helpdesk_v2.0\App.xaml
+C:\Users\Administrator\source\repos\Helpdesk_v2.0\Helpdesk_v2.0\App.xaml
 51583179912
 
 9475357411
-196-1971386247
+196-248934542
 DetailsWindow.xaml;MainWindow.xaml;ucAddPersoon.xaml;ucEmployees.xaml;ucVestiging.xaml;
 
 False

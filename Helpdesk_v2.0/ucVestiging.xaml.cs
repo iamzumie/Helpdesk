@@ -241,6 +241,7 @@ namespace Helpdesk_v2._0
                             {
                                 LoadDataGrid();
                                 ControlsLeegmaken();
+                                Changed = "Insert";
                             }
                             else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
                             {

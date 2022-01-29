@@ -6,15 +6,108 @@
         xmlns:local="clr-namespace:Helpdesk_v2._0"
         mc:Ignorable="d"
 		Background="White"
-        Title="DetailsWindow" Height="450" Width="400">
-    <StackPanel>
-		<Label Content="id" />
-		<TextBlock Text="{Binding id}"></TextBlock>
+        Title="DetailsWindow" Height="450" Width="600">
+	
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"></ColumnDefinition>
+			<ColumnDefinition Width="auto"></ColumnDefinition>
+			<ColumnDefinition Width="auto"></ColumnDefinition>
+			<ColumnDefinition Width="auto"></ColumnDefinition>
+			<ColumnDefinition Width="auto"></ColumnDefinition>
+			<ColumnDefinition Width="*"></ColumnDefinition>
+		</Grid.ColumnDefinitions>
 
-		<Label Content="omschrijving" />
-		<TextBlock Text="{Binding omschrijving}"></TextBlock>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
+			<RowDefinition Height="*"></RowDefinition>
+		</Grid.RowDefinitions>
 
-		<Label Content="group" />
-		<TextBlock Text="{Binding group}"></TextBlock>
-    </StackPanel>
+		<!-- Naam -->
+		<Label Content="Naam"
+			   Grid.Row="1"
+			   Grid.Column="1" />
+		<TextBox Text="{Binding Name}"
+				 Grid.Column="2"
+				 Grid.Row="1"
+				 Width="175"
+				 Margin="3" />
+
+		<!-- Tel -->
+		<Label Content="Tel"
+			   Grid.Row="1"
+			   Grid.Column="3" />
+		<TextBox Text="{Binding PhoneNumber}"
+				 Grid.Column="4"
+				 Name="txtID"
+				 Grid.Row="1"
+				 Width="175"
+				 Margin="3" />
+
+		<!-- Vestiging -->
+		<Label Content="Vestiging"
+			   Grid.Row="2"
+			   Grid.Column="1" />
+		<TextBox Text="{Binding Vestiging}"
+				 Name="txtVestiging"
+				 Grid.Column="2"
+				 Grid.Row="2"
+				 Width="175"
+				 Margin="3" />
+
+		<!-- Gender -->
+		<Label Content="Gender"
+			   Grid.Row="2"
+			   Grid.Column="3" />
+		<ComboBox ItemsSource="{Binding Gender}"
+				  Grid.Column="4"
+				  Grid.Row="2"
+				  Margin="3" Width="175"/>
+		
+		<!-- Login naam -->
+		<Label Content="Login naam"
+			   Grid.Row="3"
+			   Grid.Column="1" />
+		<TextBox Text="{Binding Login_naam}"
+				 Grid.Column="2"
+				 Grid.Row="3"
+				 Margin="3"
+				 Width="175"></TextBox>
+
+		<Label Content="EmailAddress"
+			   Grid.Row="3"
+			   Grid.Column="3" />
+		<TextBox Text="{Binding EmailAddress}"
+				   Grid.Column="4"
+				   Grid.Row="3"
+				 Margin="3"
+				 Width="175"></TextBox>
+
+		<Label Content="Extra info"
+			   Grid.Row="4"
+			   Grid.Column="1" />
+		<TextBox Grid.Row="4"
+				 Grid.Column="2"
+				 Grid.ColumnSpan="3"
+				 Height="250"
+				 Margin="3" />
+
+		<StackPanel Orientation="Horizontal"
+					Grid.Row="5"
+					Grid.Column="4"
+					Margin="3">
+			<Button x:Name="btnSave"
+					Content="Save" Width="75" Margin="5"
+					Click="btnSave_Click" />
+			<Button x:Name="btnExit"
+					Content="Exit"
+					Width="75" Margin="5" />
+		</StackPanel>
+	</Grid>
 </Window>

@@ -31,6 +31,7 @@
 				 Grid.Column="2"
 				 Height="25"
 				 HorizontalAlignment="Left"
+				 VerticalContentAlignment="Center"
 				 TextAlignment="Left"
 				 Grid.Row="1"
 				 Margin="5"
@@ -52,13 +53,18 @@
 				  Grid.ColumnSpan="3"
 				  Margin="5"
 				  Height="475"
-				  FontSize="11"
+				  FontSize="10.5"
 				  Width="700"
 				  HorizontalGridLinesBrush="LightGray"
 				  VerticalGridLinesBrush="LightGray"
 				  HorizontalAlignment="left"
 				  x:Name="dgResults"
 				  IsReadOnly="True">
+			<DataGrid.Resources>
+				<Style TargetType="DataGridRow">
+					<EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick" />
+				</Style>
+			</DataGrid.Resources>
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Name"
 									Binding="{Binding Name}"  

@@ -26,15 +26,18 @@ namespace Helpdesk_v2._0
         public ucEmployees()
         {
             InitializeComponent();
+
         }
 
         public class MyItem
         {
+            public string id { get; set; }
             public string Name { get; set; }
             public string Gender { get; set; }
             public string Login_naam { get; set; }
             public string EmailAddress { get; set; }
             public string JobTitle { get; set; }
+            public string PhoneNumber { get; set; }
         }
 
 
@@ -42,14 +45,14 @@ namespace Helpdesk_v2._0
         {
             txtSearch.Focus();
 
-            string Q = "select top 100 * from Person.Person p inner join Person.EmailAddress on p.BusinessEntityID = EmailAddress.BusinessEntityID inner join HumanResources.Employee e on e.BusinessEntityID = p.BusinessEntityID Order by FirstName, LastName asc";
+            string Q = "select top 100 p.BusinessEntityID, p.FirstName, p.MiddleName, p.LastName, pe.EmailAddress, e.LoginID, e.JobTitle, e.Gender, pp.PhoneNumber from Person.Person p inner join Person.EmailAddress pe on p.BusinessEntityID = pe.BusinessEntityID inner join HumanResources.Employee e on e.BusinessEntityID = p.BusinessEntityID left join Person.PersonPhone pp on p.BusinessEntityID = pp.BusinessEntityID Order by FirstName, LastName asc";
             LoadDataGrid(Q);
         }
 
         // When you press the Search button
         private void btnZoek_Click(object sender, RoutedEventArgs e)
         {
-            string Q = "select top 100 * from Person.Person p inner join Person.EmailAddress on p.BusinessEntityID = EmailAddress.BusinessEntityID inner join HumanResources.Employee e on e.BusinessEntityID = p.BusinessEntityID WHERE FirstName LIKE '%' + @FirstName + '%' Order by FirstName, LastName asc";
+            string Q = "select top 100 p.BusinessEntityID, p.FirstName, p.MiddleName, p.LastName, pe.EmailAddress, e.LoginID, e.JobTitle, e.Gender, pp.PhoneNumber from Person.Person p inner join Person.EmailAddress pe on p.BusinessEntityID = pe.BusinessEntityID inner join HumanResources.Employee e on e.BusinessEntityID = p.BusinessEntityID left join Person.PersonPhone pp on p.BusinessEntityID = pp.BusinessEntityID WHERE FirstName LIKE '%' + @FirstName + '%' Order by FirstName, LastName asc";
             LoadDataGrid(Q);
         }
 
@@ -96,9 +99,10 @@ namespace Helpdesk_v2._0
             while (Reader.Read())
             {
                 string FullName = string.Empty;
-                string Gender, Mail, Login_naam, JobTitle = string.Empty;
+                string id, Gender, Mail, Login_naam, JobTitle, PhoneNumber = string.Empty;
 
                 // FullName
+                id = Reader["BusinessEntityID"].ToString();
                 FullName += Reader["FirstName"].ToString() + " ";
                 if (Reader["MiddleName"].ToString() != "")
                 {
@@ -110,9 +114,22 @@ namespace Helpdesk_v2._0
                 JobTitle = Reader["JobTitle"].ToString();
                 Login_naam = Reader["LoginID"].ToString();
                 Mail = Reader["EmailAddress"].ToString();
+                PhoneNumber = Reader["PhoneNumber"].ToString();
 
                 // Add to the DataGrid
-                dgResults.Items.Add(new MyItem { Name = FullName, Gender = Gender, JobTitle = JobTitle, Login_naam = Login_naam, EmailAddress = Mail });
+                dgResults.Items.Add(new MyItem { id = id, Name = FullName, Gender = Gender, JobTitle = JobTitle, Login_naam = Login_naam, EmailAddress = Mail, PhoneNumber = PhoneNumber });
+            }
+        }
+
+        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                var row = e.Source as DataGridRow;
+
+                DetailsWindow detailsWindow = new DetailsWindow(row.Item);
+
+                detailsWindow.Show();
             }
         }
     }
