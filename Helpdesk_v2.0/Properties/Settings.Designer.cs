@@ -26,8 +26,9 @@ namespace Helpdesk_v2._0.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=AdventureWor" +
-            "ks2019;Data Source=ZUMIE-LAPTOP\\MSSQLSERVER01")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=tcp:zumiesql.database.windows.net,1433;Initial Catalog=AdventureWorks" +
+            "2019;Persist Security Info=True;User ID=azureuser;Password=ZuMie06!;MultipleActi" +
+            "veResultSets=False;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False")]
         public string CN {
             get {
                 return ((string)(this["CN"]));
