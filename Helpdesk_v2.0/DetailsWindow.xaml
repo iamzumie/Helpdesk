@@ -19,7 +19,8 @@
 		</Grid.ColumnDefinitions>
 
 		<Grid.RowDefinitions>
-			<RowDefinition Height="*"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
 			<RowDefinition Height="auto"></RowDefinition>
 			<RowDefinition Height="auto"></RowDefinition>
 			<RowDefinition Height="auto"></RowDefinition>
@@ -29,85 +30,134 @@
 			<RowDefinition Height="*"></RowDefinition>
 		</Grid.RowDefinitions>
 
-		<!-- Naam -->
-		<Label Content="Naam"
+		<!-- FULLNAME -->
+		<TextBox Text="{Binding id}"
+				 Name="txtID"
+				 Visibility="Hidden"
+				 Grid.Row="0"
+				 Grid.Column="0" />
+		<Label Content="{Binding Name}"
+			   Grid.Row="0"
+			   FontSize="20"
+			   FontWeight="Bold"
+			   Grid.ColumnSpan="2"
+			   Grid.Column="1"
+			   Height="auto"/>
+
+
+		<!-- Voornaam -->
+		<Label Content="Voornaam"
 			   Grid.Row="1"
 			   Grid.Column="1" />
-		<TextBox Text="{Binding Name}"
+		<TextBox Text="{Binding FirstName}"
 				 Grid.Column="2"
+				 x:Name="txtFirstName"
+				 Grid.Row="1"
+				 Width="175"
+				 Margin="3" />
+
+		<!-- Achternaam -->
+		<Label Content="Achternaam"
+			   Grid.Row="2"
+			   Grid.Column="1" />
+		<TextBox Text="{Binding LastName}"
+				 Grid.Column="2"
+				 Grid.Row="2"
+				 x:Name="txtLastName"
+				 Width="175"
+				 Margin="3" />
+
+		<!-- Achternaam -->
+		<Label Content="Tweede naam"
+			   Grid.Row="1"
+			   Grid.Column="3" />
+		<TextBox Text="{Binding MiddleName}"
+				 x:Name="txtMiddleName"
+				 Grid.Column="4"
 				 Grid.Row="1"
 				 Width="175"
 				 Margin="3" />
 
 		<!-- Tel -->
-		<Label Content="Tel"
-			   Grid.Row="1"
-			   Grid.Column="3" />
-		<TextBox Text="{Binding PhoneNumber}"
-				 Grid.Column="4"
-				 Name="txtID"
-				 Grid.Row="1"
-				 Width="175"
-				 Margin="3" />
-
-		<!-- Vestiging -->
 		<Label Content="Vestiging"
 			   Grid.Row="2"
+			   Grid.Column="3" />
+		<ComboBox Grid.Column="4"
+				  Name="txtVestiging"
+				  Grid.Row="2"
+				  Width="175"
+				  Margin="3" 
+				  SelectedValue="{Binding DepartmentID}"/>
+
+		<!-- Vestiging -->
+		<Label Content="Job Title"
+			   Grid.Row="3"
 			   Grid.Column="1" />
-		<TextBox Text="{Binding Vestiging}"
-				 Name="txtVestiging"
+		<TextBox Text="{Binding JobTitle}"
+				 Name="txtJobTitle"
 				 Grid.Column="2"
-				 Grid.Row="2"
+				 Grid.Row="3"
 				 Width="175"
 				 Margin="3" />
 
 		<!-- Gender -->
 		<Label Content="Gender"
-			   Grid.Row="2"
+			   Grid.Row="3"
 			   Grid.Column="3" />
-		<ComboBox ItemsSource="{Binding Gender}"
+		<ComboBox x:Name="cboGender"
+				  SelectedValue="{Binding Gender}"
 				  Grid.Column="4"
-				  Grid.Row="2"
-				  Margin="3" Width="175"/>
-		
+				  Grid.Row="3"
+				  Margin="3"
+				  Width="175"
+				  IsReadOnly="True" />
+
+
 		<!-- Login naam -->
 		<Label Content="Login naam"
-			   Grid.Row="3"
+			   Grid.Row="4"
 			   Grid.Column="1" />
 		<TextBox Text="{Binding Login_naam}"
 				 Grid.Column="2"
-				 Grid.Row="3"
+				 Grid.Row="4"
 				 Margin="3"
+				 x:Name="txtLogin"
 				 Width="175"></TextBox>
 
 		<Label Content="EmailAddress"
-			   Grid.Row="3"
+			   Grid.Row="4"
 			   Grid.Column="3" />
 		<TextBox Text="{Binding EmailAddress}"
 				   Grid.Column="4"
-				   Grid.Row="3"
+				   Grid.Row="4"
+				 x:Name="txtMail"
 				 Margin="3"
 				 Width="175"></TextBox>
 
 		<Label Content="Extra info"
-			   Grid.Row="4"
+			   Grid.Row="5"
 			   Grid.Column="1" />
-		<TextBox Grid.Row="4"
+		<TextBox Grid.Row="5"
 				 Grid.Column="2"
 				 Grid.ColumnSpan="3"
-				 Height="250"
+				 x:Name="txtExtraInfo"
+				 Height="200"
 				 Margin="3" />
 
 		<StackPanel Orientation="Horizontal"
-					Grid.Row="5"
+					Grid.Row="6"
 					Grid.Column="4"
 					Margin="3">
 			<Button x:Name="btnSave"
-					Content="Save" Width="75" Margin="5"
+					Content="Save"
+					Width="75"
+					Margin="5"
 					Click="btnSave_Click" />
 			<Button x:Name="btnExit"
 					Content="Exit"
-					Width="75" Margin="5" />
+					Width="75" 
+					Margin="5"
+					Click="btnExit_Click" />
 		</StackPanel>
 	</Grid>
 </Window>

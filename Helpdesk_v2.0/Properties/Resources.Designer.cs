@@ -79,6 +79,15 @@ namespace Helpdesk_v2._0.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to U_Persoon.
+        /// </summary>
+        internal static string U_Persoon {
+            get {
+                return ResourceManager.GetString("U_Persoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to U_Vestiging.
         /// </summary>
         internal static string U_Vestiging {

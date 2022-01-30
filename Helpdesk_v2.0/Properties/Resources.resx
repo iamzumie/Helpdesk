@@ -123,6 +123,9 @@
   <data name="I_Vestiging" xml:space="preserve">
     <value>I_Vestiging</value>
   </data>
+  <data name="U_Persoon" xml:space="preserve">
+    <value>U_Persoon</value>
+  </data>
   <data name="U_Vestiging" xml:space="preserve">
     <value>U_Vestiging</value>
   </data>
