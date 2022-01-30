@@ -87,7 +87,7 @@
 				  Grid.Row="2"
 				  Width="175"
 				  Margin="3" 
-				  SelectedValue="{Binding DepartmentID}"/>
+				  SelectedValue="{Binding Department}"/>
 
 		<!-- Vestiging -->
 		<Label Content="Job Title"

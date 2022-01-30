@@ -219,37 +219,40 @@ namespace Helpdesk_v2._0
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (dgResults.SelectedItems.Count > 0)
+            if (MessageBox.Show("Ben je zeker dat je deze vestiging wilt verwijderen?","Verwijderen", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                var row = dgResults.SelectedItem as MyItem;
-
-                using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
+                if (dgResults.SelectedItems.Count > 0)
                 {
-                    using (SqlCommand CMD = new SqlCommand(Properties.Resources.D_Vestiging, CN))
+                    var row = dgResults.SelectedItem as MyItem;
+
+                    using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
                     {
-                        using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
+                        using (SqlCommand CMD = new SqlCommand(Properties.Resources.D_Vestiging, CN))
                         {
-                            CMD.CommandType = CommandType.StoredProcedure;
-                            CMD.Parameters.AddWithValue("@DepartmentID", id);
-                            CMD.Parameters.AddWithValue("@ReturnValue", 0);
-                            CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
+                            using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
+                            {
+                                CMD.CommandType = CommandType.StoredProcedure;
+                                CMD.Parameters.AddWithValue("@DepartmentID", id);
+                                CMD.Parameters.AddWithValue("@ReturnValue", 0);
+                                CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
 
-                            DT = new DataTable();
-                            DA.Fill(DT);
+                                DT = new DataTable();
+                                DA.Fill(DT);
 
-                            if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
-                            {
-                                LoadDataGrid();
-                                ControlsLeegmaken();
-                                Changed = "Insert";
-                            }
-                            else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
-                            {
-                                MessageBox.Show("The delete has failed due to concurrency issues.");
-                            }
-                            else if ((int)CMD.Parameters["@ReturnValue"].Value == 997)
-                            {
-                                MessageBox.Show("The delete has failed due to an unexpected error.");
+                                if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
+                                {
+                                    LoadDataGrid();
+                                    ControlsLeegmaken();
+                                    Changed = "Insert";
+                                }
+                                else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
+                                {
+                                    MessageBox.Show("The delete has failed due to concurrency issues.");
+                                }
+                                else if ((int)CMD.Parameters["@ReturnValue"].Value == 997)
+                                {
+                                    MessageBox.Show("The delete has failed due to an unexpected error.");
+                                }
                             }
                         }
                     }

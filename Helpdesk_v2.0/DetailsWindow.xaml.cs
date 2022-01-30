@@ -46,7 +46,7 @@ namespace Helpdesk_v2._0
                     {
                         while (DR.Read())
                         {
-                            txtVestiging.Items.Add(DR["DepartmentID"].ToString());
+                            txtVestiging.Items.Add(DR["Name"].ToString());
                         }
                     }
                     CN.Close();
@@ -59,6 +59,28 @@ namespace Helpdesk_v2._0
             cboGender.Items.Add("M");
         }
 
+        private Int16 GetID ()
+        {
+            Int16 id = 0;
+
+            using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
+            {
+                using (SqlCommand CMD = new SqlCommand("select DepartmentID from HumanResources.Department where Name = @Name", CN))
+                {
+                    CN.Open();
+                    CMD.Parameters.Add(new SqlParameter("Name", txtVestiging.Text));
+                    SqlDataReader DR = CMD.ExecuteReader();
+
+                    while(DR.Read())
+                    {
+                        id = (Int16) DR["DepartmentID"];
+                    }
+                }
+            }
+            return id;
+            
+        }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
@@ -67,6 +89,7 @@ namespace Helpdesk_v2._0
                 {
                     using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
                     {
+                        Int16 DepartmentID = GetID();
                         CMD.CommandType = CommandType.StoredProcedure;
                         CMD.Parameters.AddWithValue("@id", txtID.Text);
                         CMD.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
@@ -75,10 +98,11 @@ namespace Helpdesk_v2._0
                         CMD.Parameters.AddWithValue("@LoginID", txtLogin.Text);
                         CMD.Parameters.AddWithValue("@EmailAddress", txtMail.Text);
                         CMD.Parameters.AddWithValue("@JobTitle", txtJobTitle.Text);
-                        CMD.Parameters.AddWithValue("@DepartmentID", txtVestiging.Text);
+                        CMD.Parameters.AddWithValue("@DepartmentID", DepartmentID);
                         CMD.Parameters.AddWithValue("@Gender", cboGender.SelectedItem);
                         CMD.Parameters.AddWithValue("@ReturnValue", 0);
                         CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
+
 
                         DT = new DataTable();
                         DA.Fill(DT);
@@ -86,7 +110,6 @@ namespace Helpdesk_v2._0
                         
                         if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
                         {
-                            MessageBox.Show("succes");
                             this.Close();
                         }
                         else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
