@@ -25,20 +25,19 @@ namespace Helpdesk_v2._0
         #region VARIABELEN
         DataTable DT;
         bool Loading = true;
-        DataRow RW;
         #endregion
 
+        #region METHODS
         public ucAddPersoon()
         {
             InitializeComponent();
             Loading = true;
-            BindComboBox();
+            FillGenderComboBox();
+            FillDepartmentComboBox();
             Loading = false;
-
         }
 
-
-        private void BindComboBox()
+        private void FillDepartmentComboBox()
         {
             // String
             string Q = "SELECT * FROM HumanResources.Department Order by Name asc";
@@ -65,9 +64,9 @@ namespace Helpdesk_v2._0
                         }
                     }
                 }
-                cboDepartement.ItemsSource = DT.DefaultView;
-                cboDepartement.SelectedValuePath = "DepartmentID";
-                cboDepartement.DisplayMemberPath = "Name";
+                cboDepartment.ItemsSource = DT.DefaultView;
+                cboDepartment.SelectedValuePath = "DepartmentID";
+                cboDepartment.DisplayMemberPath = "Name";
             }
             catch (Exception ex)
             {
@@ -79,43 +78,61 @@ namespace Helpdesk_v2._0
             }
         }
 
+        // Vul de combobox van de Gender aan met de keuzes, de binding zit in de XAML om de keuze te laten zien
+        private void FillGenderComboBox()
+        {
+            cboGender.Items.Add("F");
+            cboGender.Items.Add("M");
+        }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            txtNaam.Focus();
+            txtFirstName.Focus();
         }
 
         private void ControlsLeegmaken()
         {
-            cboDepartement.SelectedItem = -1;
+            cboDepartment.SelectedItem = -1;
             cboGender.SelectedItem = -1;
+            txtFirstName.Text = string.Empty;
+            txtMiddleName.Text = string.Empty;
+            txtLastName.Text = string.Empty;
             txtLogin.Text = string.Empty;
+            txtEmail.Text = string.Empty;
+            txtJobTitle.Text = string.Empty;
+            txtExtraInfo.Text = string.Empty;
         }
+        #endregion
 
+        #region EVENTS
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            
-            string Q = @"INSERT INTO HumanResources.Employee(BusinessEntityID, NationalIDNumber, BirthDate, MaritalStatus, LoginID, Gender, HireDate, JobTitle) VALUES(@BusinessEntityID, @NationalIDNumber, @BirthDate, @MaritalStatus, @LoginID, @Gender, @HireDate, @Departement);";
             Random rmd = new Random();
-
             try
             {
                 this.Cursor = Cursors.Wait;
                 using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
                 {
-                    using (SqlCommand CMD = new SqlCommand(Q, CN))
+                    using (SqlCommand CMD = new SqlCommand(Properties.Resources.I_Persoon, CN))
                     {
                         using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
                         {
-
-                            CMD.Parameters.AddWithValue("@BusinessEntityID", 1707);
-                            CMD.Parameters.AddWithValue("@NationalIDNumber", rmd.Next());
-                            CMD.Parameters.AddWithValue("@BirthDate", "1977-06-06");
-                            CMD.Parameters.AddWithValue("@MaritalStatus", "S");
-                            CMD.Parameters.AddWithValue("@LoginID", txtLogin.Text);
-                            CMD.Parameters.AddWithValue("@Gender", 'F');
-                            CMD.Parameters.AddWithValue("@Departement", (Int16)cboDepartement.SelectedValue);
-                            CMD.Parameters.AddWithValue("@HireDate", "2011-02-15");
+                            Guid guid = Guid.NewGuid(); // SQL heeft een UNIQUEIDENTIFIER NODIG
+                            CMD.CommandType = CommandType.StoredProcedure;
+                            CMD.Parameters.AddWithValue("@BusinessEntityID", 20779);
+                            CMD.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                            CMD.Parameters.AddWithValue("@MiddleName", txtMiddleName.Text);
+                            CMD.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                            CMD.Parameters.AddWithValue("@PersonGUID", guid);
+                            /*                           CMD.Parameters.AddWithValue("@BusinessEntityID", 1707);
+                                                       CMD.Parameters.AddWithValue("@NationalIDNumber", rmd.Next());
+                                                       CMD.Parameters.AddWithValue("@BirthDate", "1977-06-06");
+                                                       CMD.Parameters.AddWithValue("@MaritalStatus", "S");
+                                                       CMD.Parameters.AddWithValue("@LoginID", txtLogin.Text);
+                                                       CMD.Parameters.AddWithValue("@Gender", 'F');
+                                                       CMD.Parameters.AddWithValue("@Departement", (Int16)cboDepartment.SelectedValue);
+                                                       CMD.Parameters.AddWithValue("@HireDate", "2011-02-15");
+                            */
                             CMD.Parameters.AddWithValue("@ReturnValue", 0);
                             CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
 
@@ -125,7 +142,7 @@ namespace Helpdesk_v2._0
                             if((int)CMD.Parameters["@ReturnValue"].Value == 999)
                             {
                                 Loading = true;
-                                BindComboBox();
+                                FillDepartmentComboBox();
                                 Loading = false;
                                 ControlsLeegmaken();
                             }
@@ -146,5 +163,6 @@ namespace Helpdesk_v2._0
                 MessageBox.Show(ex.Message.ToString());
             }
         }
+        #endregion
     }
 }

@@ -22,11 +22,10 @@ namespace Helpdesk_v2._0
     /// </summary>
     public partial class ucEmployees : UserControl
     {
-
+        #region METHODS
         public ucEmployees()
         {
             InitializeComponent();
-
         }
 
         public class MyItem
@@ -44,7 +43,6 @@ namespace Helpdesk_v2._0
             public string Department { get; set; }
             public string DepartmentID { get; set; }
         }
-
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -79,7 +77,6 @@ namespace Helpdesk_v2._0
                         CN.Open();
                         using (SqlDataReader DR = CMD.ExecuteReader())
                         {
-                            // Put the data into the DataGrid
                             FillDataGrid(DR);
                         }
                         CN.Close();
@@ -132,7 +129,9 @@ namespace Helpdesk_v2._0
                 dgResults.Items.Add(new MyItem { id = id, FirstName = FirstName, MiddleName = MiddleName, LastName = LastName, Name = FullName, Department = Department, DepartmentID = DepartmentID, Gender = Gender, JobTitle = JobTitle, Login_naam = Login_naam, EmailAddress = Mail, PhoneNumber = PhoneNumber });
             }
         }
+        #endregion
 
+        #region EVENTS
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -144,5 +143,6 @@ namespace Helpdesk_v2._0
                 detailsWindow.Show();
             }
         }
+        #endregion
     }
 }

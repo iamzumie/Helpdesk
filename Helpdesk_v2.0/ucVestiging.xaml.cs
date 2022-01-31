@@ -27,15 +27,19 @@ namespace Helpdesk_v2._0
     public partial class ucVestiging : UserControl
     {
         #region VARIABELEN
-        DataTable DT;
-        string Changed = "Insert";
-        Int16 id = 0;
+            DataTable DT;
+            string Changed = "Insert";
+            Int16 id = 0;
+            bool Loading = true;
         #endregion
 
+        #region METHODS
         public ucVestiging()
         {
             InitializeComponent();
-            LoadDataGrid();
+            Loading = true;
+            LoadDataGrid(); // Moet dit hier of beter bij de UserControl_Loaded?
+            Loading = false;
         }
 
         public class MyItem
@@ -53,7 +57,7 @@ namespace Helpdesk_v2._0
         // Loading up the DataGrid
         private void LoadDataGrid()
         {
-            // Laad vestigingen, use of SqlDataReader because of select statement
+            // Enkel Select statement = beter om dan ExecuteReader te gebruiken?
             string Q = "select * from HumanResources.Department";
 
             try
@@ -68,7 +72,7 @@ namespace Helpdesk_v2._0
                             CN.Open();
                             using (SqlDataReader DR = CMD.ExecuteReader())
                             {
-                                FillDataGrid(DR); // Fills the Datagrid with the data from the DataReader
+                                FillDataGrid(DR);
                             }
                             CN.Close();
                         }
@@ -89,9 +93,9 @@ namespace Helpdesk_v2._0
             }
         }
 
-
         private void FillDataGrid(SqlDataReader Reader)
         {
+            // Maakt de datagrid eerst leeg
             dgResults.Items.Clear();
 
             while (Reader.Read())
@@ -105,7 +109,14 @@ namespace Helpdesk_v2._0
                 dgResults.Items.Add(new MyItem { id = DepartmentID, omschrijving = Name, group = GroupName });
             }
         }
+        private void ControlsLeegmaken()
+        {
+            txtGroup.Text = string.Empty;
+            txtVestiging.Text = string.Empty;
+        }
+        #endregion
 
+        #region EVENTS
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -129,7 +140,9 @@ namespace Helpdesk_v2._0
 
                                 if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
                                 {
+                                    Loading = true;
                                     LoadDataGrid();
+                                    Loading = false;
                                     ControlsLeegmaken();
                                 }
                                 else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
@@ -154,9 +167,9 @@ namespace Helpdesk_v2._0
                             using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
                             {
                                 CMD.CommandType = CommandType.StoredProcedure;
+                                CMD.Parameters.AddWithValue("@id", id);
                                 CMD.Parameters.AddWithValue("@Name", txtVestiging.Text);
                                 CMD.Parameters.AddWithValue("@GroupName", txtGroup.Text);
-                                CMD.Parameters.AddWithValue("@id", id);
                                 CMD.Parameters.AddWithValue("@ReturnValue", 0);
                                 CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
 
@@ -165,7 +178,9 @@ namespace Helpdesk_v2._0
 
                                 if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
                                 {
+                                    Loading = true;
                                     LoadDataGrid();
+                                    Loading = false;
                                     ControlsLeegmaken();
                                     Changed = "Insert";
                                 }
@@ -188,11 +203,6 @@ namespace Helpdesk_v2._0
             }
         }
 
-        private void ControlsLeegmaken()
-        {
-            txtGroup.Text = string.Empty;
-            txtVestiging.Text = string.Empty;
-        }
 
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -223,8 +233,6 @@ namespace Helpdesk_v2._0
             {
                 if (dgResults.SelectedItems.Count > 0)
                 {
-                    var row = dgResults.SelectedItem as MyItem;
-
                     using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
                     {
                         using (SqlCommand CMD = new SqlCommand(Properties.Resources.D_Vestiging, CN))
@@ -241,9 +249,12 @@ namespace Helpdesk_v2._0
 
                                 if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
                                 {
+                                    Loading = true;
                                     LoadDataGrid();
+                                    Loading = false;
                                     ControlsLeegmaken();
                                     Changed = "Insert";
+                                    txtVestiging.Focus();
                                 }
                                 else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
                                 {
@@ -262,6 +273,8 @@ namespace Helpdesk_v2._0
 
         private void DataGridRow_Selected(object sender, RoutedEventArgs e)
         {
+            if (Loading == false)
+            {
                 var row = e.Source as DataGridRow;
                 if (row != null)
                 {
@@ -269,6 +282,8 @@ namespace Helpdesk_v2._0
                     id = Convert.ToInt16(data.id);
                 }
             }
+        }
+        #endregion
     }
 }
 

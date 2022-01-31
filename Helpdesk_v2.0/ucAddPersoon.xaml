@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Helpdesk_v2._0"
              mc:Ignorable="d"
 			 Background="#FFABABAB"
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="500" d:DesignWidth="800"
 			 Loaded="UserControl_Loaded">
 	
     <Grid>
@@ -25,58 +25,64 @@
 			<RowDefinition Height="auto"></RowDefinition>
 			<RowDefinition Height="auto"></RowDefinition>
 			<RowDefinition Height="auto"></RowDefinition>
+			<RowDefinition Height="auto"></RowDefinition>
 			<RowDefinition Height="*"></RowDefinition>
 		</Grid.RowDefinitions>
 
-		<!-- Naam -->
-		<Label Content="Naam"
-			   x:Name="lblName" 
+		<!-- FirstName -->
+		<Label Content="Voornaam"
+			   x:Name="lblFirstName" 
 			   Grid.Column="1"
 			   Grid.Row="1"
 			   Margin="5"/>
-		<TextBox x:Name="txtNaam"
+		<TextBox x:Name="txtFirstName"
 				 Grid.Row="1"
 				 Grid.Column="2" 
 				 Width="200"
 				 Margin="5"
-				 HorizontalContentAlignment="Left"  VerticalContentAlignment="Center"/>
+				 HorizontalContentAlignment="Left" 
+				 VerticalContentAlignment="Center"/>
 
-		<!-- Loginnaam -->
-		<Label Content="Loginnaam"
-			   x:Name="lblLoginnaam"
+		<!-- MiddleName -->
+		<Label Content="Tweede Naam"
+			   x:Name="lblMiddleName"
 			   Grid.Column="3"
 			   Grid.Row="1"
 			   Margin="5" />
-		<TextBox x:Name="txtLogin"
+		<TextBox x:Name="txtMiddleName"
 				 Grid.Row="1"
 				 Grid.Column="4"
 				 Width="200"
 				 Margin="5"
-				 HorizontalContentAlignment="Left" />
+				 HorizontalContentAlignment="Left"
+				 VerticalContentAlignment="Center" />
 				
-		<!-- Job titel -->
-		<Label Content="Departement"
-			   x:Name="lblDepartement"
+		<!-- LastName -->
+		<Label Content="Achternaam"
+			   x:Name="lblLastName"
 			   Grid.Column="1"
 			   Grid.Row="2"
 			   Margin="5" />
-		<ComboBox x:Name="cboDepartement"
+		<TextBox x:Name="txtLastName"
 				  Margin="5"
 				  Grid.Row="2"
-				  Grid.Column="2" />
+				 Grid.Column="2"
+				 HorizontalContentAlignment="Left"
+				 VerticalContentAlignment="Center" />
 
-		<!-- Email -->
-		<Label Content="Email"
-			   x:Name="lblEmail"
+		<!-- Login -->
+		<Label Content="Login naam"
+			   x:Name="lblLoginID"
 			   Grid.Column="3"
 			   Grid.Row="2"
 			   Margin="5" />
-		<TextBox x:Name="txtEmail"
+		<TextBox x:Name="txtLogin"
 				 Grid.Row="2"
 				 Grid.Column="4"
 				 Width="200"
 				 Margin="5"
-				 HorizontalContentAlignment="Left" />
+				 HorizontalContentAlignment="Left"
+				 VerticalContentAlignment="Center" />
 
 		<!-- Gender -->
 		<Label Content="Gender"
@@ -88,27 +94,67 @@
 				  Grid.Row="3"
 				  Grid.Column="2"
 				  Width="200"
-				  Margin="5" SelectedValuePath="Gender">
-			<ComboBoxItem>M</ComboBoxItem>
-			<ComboBoxItem>F</ComboBoxItem>
-		</ComboBox>
+				  Margin="5" />
+
+
+		<!-- Email -->
+		<Label Content="E-mail adres"
+			   x:Name="lblEmail"
+			   Grid.Column="3"
+			   Grid.Row="3"
+			   Margin="5" />
+		<TextBox x:Name="txtEmail"
+				 Grid.Row="3"
+				 Grid.Column="4"
+				 Width="200"
+				 Margin="5"
+				 HorizontalContentAlignment="Left"
+				 VerticalContentAlignment="Center" />
+
+
+		<!-- Department -->
+		<Label Content="Department"
+			   x:Name="lblDepartment"
+			   Grid.Column="1"
+			   Grid.Row="4"
+			   Margin="5" />
+		<ComboBox x:Name="cboDepartment"
+				 Margin="5"
+				 Grid.Row="4"
+				 Grid.Column="2" />
+
+		<!-- Job Title -->
+		<Label Content="Job Titel"
+			   x:Name="lblJobTitle"
+			   Grid.Column="3"
+			   Grid.Row="4"
+			   Margin="5" />
+		<TextBox x:Name="txtJobTitle"
+				 Grid.Row="4"
+				 Grid.Column="4"
+				 Width="200"
+				 Margin="5"
+				 HorizontalContentAlignment="Left" />
 
 		<!-- Extra info -->
 		<Label Content="Extra info"
 			   x:Name="lblExtraInfo"
 			   Grid.Column="1"
-			   Grid.Row="4"
+			   Grid.Row="5"
 			   Margin="5" />
 		<TextBox x:Name="txtExtraInfo"
-				 Grid.Row="4"
+				 Grid.Row="5"
 				 Grid.ColumnSpan="3"
 				 Grid.Column="2"
 				 Height="250"
-				 Margin="5"  HorizontalContentAlignment="Left"/>
-
+				 Margin="5"
+				 HorizontalContentAlignment="Left"
+				 VerticalContentAlignment="Center" />
+		
+		
 		<!-- Save & Close -->
 		<StackPanel Orientation="Horizontal"
-					Grid.Row="5"
+					Grid.Row="6"
 					Grid.Column="4" HorizontalAlignment="Right">
 			<Button x:Name="btnSave"
 					Content="Save"

@@ -22,16 +22,21 @@ namespace Helpdesk_v2._0
     public partial class DetailsWindow : Window
     {
         #region VARIABELEN
-        DataTable DT;
+            DataTable DT;
+            bool Loading = true;
         #endregion
 
+
+        #region METHODS
         public DetailsWindow(object user)
         {
             InitializeComponent();
 
             DataContext = user;
+            Loading = true;
             FillDepartmentComboBox();
             FillGenderComboBox();
+            Loading = false;
         }
 
         private void FillDepartmentComboBox()
@@ -53,12 +58,15 @@ namespace Helpdesk_v2._0
                 }
             }
         }
+
+        // Vul de combobox van de Gender aan met de keuzes, de binding zit in de XAML om de keuze te laten zien
         private void FillGenderComboBox()
         {
             cboGender.Items.Add("F");
             cboGender.Items.Add("M");
         }
 
+        // Hier ga ik de ID ophalen die achter mijn combobox zit
         private Int16 GetID ()
         {
             Int16 id = 0;
@@ -79,51 +87,57 @@ namespace Helpdesk_v2._0
                 }
             }
             return id;
-            
         }
+        #endregion
 
+        #region EVENTS
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
+            try
             {
-                using (SqlCommand CMD = new SqlCommand(Properties.Resources.U_Persoon, CN))
+                using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
                 {
-                    using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
+                    using (SqlCommand CMD = new SqlCommand(Properties.Resources.U_Persoon, CN))
                     {
-                        Int16 DepartmentID = GetID();
-                        CMD.CommandType = CommandType.StoredProcedure;
-                        CMD.Parameters.AddWithValue("@id", txtID.Text);
-                        CMD.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
-                        CMD.Parameters.AddWithValue("@MiddleName", txtMiddleName.Text);
-                        CMD.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                        CMD.Parameters.AddWithValue("@LoginID", txtLogin.Text);
-                        CMD.Parameters.AddWithValue("@EmailAddress", txtMail.Text);
-                        CMD.Parameters.AddWithValue("@JobTitle", txtJobTitle.Text);
-                        CMD.Parameters.AddWithValue("@DepartmentID", DepartmentID);
-                        CMD.Parameters.AddWithValue("@Gender", cboGender.SelectedItem);
-                        CMD.Parameters.AddWithValue("@ReturnValue", 0);
-                        CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
+                        using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
+                        {
+                            Int16 DepartmentID = GetID();
+                            CMD.CommandType = CommandType.StoredProcedure;
+                            CMD.Parameters.AddWithValue("@id", txtID.Text);
+                            CMD.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                            CMD.Parameters.AddWithValue("@MiddleName", txtMiddleName.Text);
+                            CMD.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                            CMD.Parameters.AddWithValue("@LoginID", txtLogin.Text);
+                            CMD.Parameters.AddWithValue("@EmailAddress", txtMail.Text);
+                            CMD.Parameters.AddWithValue("@JobTitle", txtJobTitle.Text);
+                            CMD.Parameters.AddWithValue("@DepartmentID", DepartmentID);
+                            CMD.Parameters.AddWithValue("@Gender", cboGender.SelectedItem);
+                            CMD.Parameters.AddWithValue("@ReturnValue", 0);
+                            CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
 
-
-                        DT = new DataTable();
-                        DA.Fill(DT);
-
+                            DT = new DataTable();
+                            DA.Fill(DT);
                         
-                        if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
-                        {
-                            this.Close();
-                        }
-                        else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
-                        {
-                            MessageBox.Show("The update has failed due to concurrency issues.");
-                        }
-                        else if ((int)CMD.Parameters["@ReturnValue"].Value == 997)
-                        {
-                            MessageBox.Show("The update has failed due to an unexpected error.");
-                        }
+                            if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
+                            {
+                                this.Close();
+                            }
+                            else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
+                            {
+                                MessageBox.Show("The update has failed due to concurrency issues.");
+                            }
+                            else if ((int)CMD.Parameters["@ReturnValue"].Value == 997)
+                            {
+                                MessageBox.Show("The update has failed due to an unexpected error.");
+                            }
                         
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -131,5 +145,6 @@ namespace Helpdesk_v2._0
         {
             this.Close();
         }
+        #endregion
     }
 }
