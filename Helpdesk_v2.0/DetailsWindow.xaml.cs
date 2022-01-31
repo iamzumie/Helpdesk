@@ -75,6 +75,7 @@ namespace Helpdesk_v2._0
                     {
                         id = (Int16) DR["DepartmentID"];
                     }
+                    CN.Close();
                 }
             }
             return id;
