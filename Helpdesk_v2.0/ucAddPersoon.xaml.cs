@@ -119,20 +119,11 @@ namespace Helpdesk_v2._0
                         {
                             Guid guid = Guid.NewGuid(); // SQL heeft een UNIQUEIDENTIFIER NODIG
                             CMD.CommandType = CommandType.StoredProcedure;
-                            CMD.Parameters.AddWithValue("@BusinessEntityID", 20779);
                             CMD.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
                             CMD.Parameters.AddWithValue("@MiddleName", txtMiddleName.Text);
                             CMD.Parameters.AddWithValue("@LastName", txtLastName.Text);
                             CMD.Parameters.AddWithValue("@PersonGUID", guid);
-                            /*                           CMD.Parameters.AddWithValue("@BusinessEntityID", 1707);
-                                                       CMD.Parameters.AddWithValue("@NationalIDNumber", rmd.Next());
-                                                       CMD.Parameters.AddWithValue("@BirthDate", "1977-06-06");
-                                                       CMD.Parameters.AddWithValue("@MaritalStatus", "S");
-                                                       CMD.Parameters.AddWithValue("@LoginID", txtLogin.Text);
-                                                       CMD.Parameters.AddWithValue("@Gender", 'F');
-                                                       CMD.Parameters.AddWithValue("@Departement", (Int16)cboDepartment.SelectedValue);
-                                                       CMD.Parameters.AddWithValue("@HireDate", "2011-02-15");
-                            */
+
                             CMD.Parameters.AddWithValue("@ReturnValue", 0);
                             CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
 

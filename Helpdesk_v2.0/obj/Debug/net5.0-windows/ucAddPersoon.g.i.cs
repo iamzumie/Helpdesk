@@ -213,7 +213,7 @@ namespace Helpdesk_v2._0 {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Helpdesk_v3.0;V1.0.0.0;component/ucaddpersoon.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Helpdesk_v3.0;component/ucaddpersoon.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\ucAddPersoon.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
