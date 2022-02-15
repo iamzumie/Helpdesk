@@ -97,6 +97,15 @@ namespace Helpdesk_v2._0.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to S_SortVestiging.
+        /// </summary>
+        internal static string S_SortVestiging {
+            get {
+                return ResourceManager.GetString("S_SortVestiging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to S_Vestiging.
         /// </summary>
         internal static string S_Vestiging {

@@ -39,15 +39,12 @@ namespace Helpdesk_v2._0
 
         private void FillDepartmentComboBox()
         {
-            // String
-            string Q = "SELECT * FROM HumanResources.Department Order by Name asc";
-
             try
             {
                 this.Cursor = Cursors.Wait;
                 using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
                 {
-                    using(SqlCommand CMD = new SqlCommand(Q, CN))
+                    using(SqlCommand CMD = new SqlCommand(Properties.Resources.S_SortVestiging, CN))
                     {
                         using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
                         {
