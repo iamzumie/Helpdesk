@@ -1,23 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Hangfire.Annotations;
 
 namespace Helpdesk_v2._0
 {
@@ -27,26 +13,27 @@ namespace Helpdesk_v2._0
     public partial class ucVestiging : UserControl
     {
         #region VARIABELEN
-            DataTable DT;
-            string Changed = "Insert";
-            Int16 id = 0;
-            bool Loading = true;
+        DataTable DT;
+        string changed = "Insert";
+        Int16 Id = 0;
+        bool Loading = true;
         #endregion
+
 
         #region METHODS
         public ucVestiging()
         {
             InitializeComponent();
             Loading = true;
-            LoadDataGrid(); // Moet dit hier of beter bij de UserControl_Loaded?
+            LoadDataGrid();
             Loading = false;
         }
 
-        public class MyItem
+        public class MyDataGrid
         {
-            public string id { get; set; }
-            public string omschrijving { get; set; }
-            public string group { get; set; }
+            public string BindingId { get; set; }
+            public string BindingOmschrijving { get; set; }
+            public string BindingGroup { get; set; }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -57,24 +44,31 @@ namespace Helpdesk_v2._0
         // Loading up the DataGrid
         private void LoadDataGrid()
         {
-            // Enkel Select statement = beter om dan ExecuteReader te gebruiken?
-            string Q = "select * from HumanResources.Department";
-
             try
             {
                 this.Cursor = Cursors.Wait;
                 using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
                 {
-                    using (SqlCommand CMD = new SqlCommand(Q, CN))
+                    using (SqlCommand CMD = new SqlCommand(Properties.Resources.S_Vestiging, CN))
                     {
                         try
                         {
                             CN.Open();
-                            using (SqlDataReader DR = CMD.ExecuteReader())
+                            using (SqlDataReader DR = CMD.ExecuteReader(CommandBehavior.CloseConnection))
                             {
-                                FillDataGrid(DR);
+                                dgResults.Items.Clear(); // Empties the datagrid first
+
+                                while (DR.Read())
+                                {
+                                    // Add bindings to the xaml field
+                                    dgResults.Items.Add(new MyDataGrid
+                                    { 
+                                        BindingId = DR["DepartmentID"].ToString(), 
+                                        BindingOmschrijving = DR["Name"].ToString(), 
+                                        BindingGroup = DR["GroupName"].ToString()
+                                    });
+                                }
                             }
-                            CN.Close();
                         }
                         catch (Exception ex)
                         {
@@ -93,35 +87,20 @@ namespace Helpdesk_v2._0
             }
         }
 
-        private void FillDataGrid(SqlDataReader Reader)
-        {
-            // Maakt de datagrid eerst leeg
-            dgResults.Items.Clear();
-
-            while (Reader.Read())
-            {
-                string DepartmentID, Name, GroupName = string.Empty;
-
-                DepartmentID = Reader["DepartmentID"].ToString();
-                Name = Reader["Name"].ToString();
-                GroupName = Reader["GroupName"].ToString();
-
-                dgResults.Items.Add(new MyItem { id = DepartmentID, omschrijving = Name, group = GroupName });
-            }
-        }
         private void ControlsLeegmaken()
         {
-            txtGroup.Text = string.Empty;
-            txtVestiging.Text = string.Empty;
+            txtGroup.Text = "";
+            txtVestiging.Text = "";
         }
         #endregion
+
 
         #region EVENTS
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (Changed == "Insert")
+                if (changed == "Insert")
                 {
                     using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
                     {
@@ -158,7 +137,7 @@ namespace Helpdesk_v2._0
                     }
                 }
 
-                else if (Changed == "Update")
+                else if (changed == "Update")
                 {
                     using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
                     {
@@ -167,7 +146,7 @@ namespace Helpdesk_v2._0
                             using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
                             {
                                 CMD.CommandType = CommandType.StoredProcedure;
-                                CMD.Parameters.AddWithValue("@id", id);
+                                CMD.Parameters.AddWithValue("@id", Id);
                                 CMD.Parameters.AddWithValue("@Name", txtVestiging.Text);
                                 CMD.Parameters.AddWithValue("@GroupName", txtGroup.Text);
                                 CMD.Parameters.AddWithValue("@ReturnValue", 0);
@@ -182,7 +161,7 @@ namespace Helpdesk_v2._0
                                     LoadDataGrid();
                                     Loading = false;
                                     ControlsLeegmaken();
-                                    Changed = "Insert";
+                                    changed = "Insert";
                                 }
                                 else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
                                 {
@@ -211,21 +190,23 @@ namespace Helpdesk_v2._0
                 var row = e.Source as DataGridRow;
                 if (row != null)
                 {
-                    var data = row.Item as MyItem;
+                    var data = row.Item as MyDataGrid;
 
-                    txtVestiging.Text = data.omschrijving;
-                    txtGroup.Text = data.group;
-                    id = Convert.ToInt16(data.id);
-                    Changed = "Update";
+                    txtVestiging.Text = data.BindingOmschrijving;
+                    txtGroup.Text = data.BindingGroup;
+                    Id = Convert.ToInt16(data.BindingId);
+                    changed = "Update";
                 }
             }
         }
+
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
             var window = Window.GetWindow(this);
             window.Close();
         }
+
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
@@ -240,7 +221,7 @@ namespace Helpdesk_v2._0
                             using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
                             {
                                 CMD.CommandType = CommandType.StoredProcedure;
-                                CMD.Parameters.AddWithValue("@DepartmentID", id);
+                                CMD.Parameters.AddWithValue("@DepartmentID", Id);
                                 CMD.Parameters.AddWithValue("@ReturnValue", 0);
                                 CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
 
@@ -253,7 +234,7 @@ namespace Helpdesk_v2._0
                                     LoadDataGrid();
                                     Loading = false;
                                     ControlsLeegmaken();
-                                    Changed = "Insert";
+                                    changed = "Insert";
                                     txtVestiging.Focus();
                                 }
                                 else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
@@ -273,13 +254,14 @@ namespace Helpdesk_v2._0
 
         private void DataGridRow_Selected(object sender, RoutedEventArgs e)
         {
-            if (Loading == false)
+            if (!Loading)
             {
-                var row = e.Source as DataGridRow;
-                if (row != null)
+                DataGridRow DataRow = e.Source as DataGridRow;
+
+                if (DataRow != null)
                 {
-                    var data = row.Item as MyItem;
-                    id = Convert.ToInt16(data.id);
+                    MyDataGrid Data = DataRow.Item as MyDataGrid;
+                    Id = Convert.ToInt16(Data.BindingId);
                 }
             }
         }
