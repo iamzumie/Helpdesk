@@ -67,19 +67,19 @@
 			</DataGrid.Resources>
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Name"
-									Binding="{Binding Name}"  
+									Binding="{Binding BindingName}"  
 									Width="auto"/>
 				<DataGridTextColumn Header="Gender"
-									Binding="{Binding Gender}"
+									Binding="{Binding BindingGender}"
 									Width="auto" />
 				<DataGridTextColumn Header="Job Title"
-									Binding="{Binding JobTitle}"
+									Binding="{Binding BindingJobTitle}"
 									Width="auto" />
 				<DataGridTextColumn Header="Loginnaam"
-									Binding="{Binding Login_naam}"
+									Binding="{Binding BindingLogin_naam}"
 									Width="auto" />
 				<DataGridTextColumn Header="Email address"
-									Binding="{Binding EmailAddress}"
+									Binding="{Binding BindingEmailAddress}"
 									Width="*" />
 			</DataGrid.Columns>
 		</DataGrid>
