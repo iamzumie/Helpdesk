@@ -31,7 +31,7 @@
 		</Grid.RowDefinitions>
 
 		<!-- FULLNAME -->
-		<TextBox Text="{Binding id}"
+		<TextBox Text="{Binding BindingId}"
 				 Name="txtID"
 				 Visibility="Hidden"
 				 Grid.Row="0"

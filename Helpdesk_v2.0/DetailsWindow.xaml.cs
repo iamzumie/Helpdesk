@@ -28,11 +28,10 @@ namespace Helpdesk_v2._0
 
 
         #region METHODS
-        public DetailsWindow(object user)
+        public DetailsWindow(int ID)
         {
             InitializeComponent();
-
-            DataContext = user;
+            MessageBox.Show(ID.ToString());
             Loading = true;
             FillDepartmentComboBox();
             FillGenderComboBox();
@@ -41,20 +40,18 @@ namespace Helpdesk_v2._0
 
         private void FillDepartmentComboBox()
         {
-            string Q = "SELECT DepartmentID, Name FROM [HumanResources].[Department]";
             using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
             {
-                using (SqlCommand CMD = new SqlCommand(Q, CN))
+                using (SqlCommand CMD = new SqlCommand(Properties.Resources.S_SortVestiging, CN))
                 {
                     CN.Open();
-                    using (SqlDataReader DR = CMD.ExecuteReader())
+                    using (SqlDataReader DR = CMD.ExecuteReader(CommandBehavior.CloseConnection))
                     {
                         while (DR.Read())
                         {
                             txtVestiging.Items.Add(DR["Name"].ToString());
                         }
                     }
-                    CN.Close();
                 }
             }
         }
@@ -77,16 +74,24 @@ namespace Helpdesk_v2._0
                 {
                     CN.Open();
                     CMD.Parameters.Add(new SqlParameter("Name", txtVestiging.Text));
-                    SqlDataReader DR = CMD.ExecuteReader();
-
-                    while(DR.Read())
+                    using (SqlDataReader DR = CMD.ExecuteReader(CommandBehavior.CloseConnection))
                     {
-                        id = (Int16) DR["DepartmentID"];
+                        while (DR.Read())
+                        {
+                            id = (Int16)DR["DepartmentID"];
+                        }
                     }
-                    CN.Close();
                 }
             }
             return id;
+        }
+
+
+        // Hier ga ik de ID ophalen die achter mijn combobox zit
+        private string GetPersonID()
+        {
+            string Name = txtID.Text;
+            return Name;
         }
         #endregion
 

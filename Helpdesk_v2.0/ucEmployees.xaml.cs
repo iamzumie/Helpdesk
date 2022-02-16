@@ -112,9 +112,11 @@ namespace Helpdesk_v2._0
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                DataGridRow DataRow = e.Source as DataGridRow;
+                // Get the SelectedItem
+                MyItem classObj = dgResults.SelectedItem as MyItem;
 
-                DetailsWindow EmployeePage = new DetailsWindow(DataRow.Item);
+                // Push the BindingId to the new Window
+                DetailsWindow EmployeePage = new DetailsWindow(Convert.ToInt32(classObj.BindingId));
                 EmployeePage.Show();
             }
         }
