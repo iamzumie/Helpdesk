@@ -129,6 +129,9 @@
   <data name="S_Employees" xml:space="preserve">
     <value>S_Employees</value>
   </data>
+  <data name="S_Person" xml:space="preserve">
+    <value>S_Person</value>
+  </data>
   <data name="S_SortVestiging" xml:space="preserve">
     <value>S_SortVestiging</value>
   </data>

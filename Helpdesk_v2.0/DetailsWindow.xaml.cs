@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Helpdesk_v2._0
 {
@@ -22,8 +12,9 @@ namespace Helpdesk_v2._0
     public partial class DetailsWindow : Window
     {
         #region VARIABELEN
-            DataTable DT;
-            bool Loading = true;
+        DataTable DT;
+        int PersonId = 0;
+        bool Loading = true;
         #endregion
 
 
@@ -31,11 +22,74 @@ namespace Helpdesk_v2._0
         public DetailsWindow(int ID)
         {
             InitializeComponent();
-            MessageBox.Show(ID.ToString());
+
+            // Getting ID from previous Window
+            MyDetails idea = new MyDetails();
+            idea.PersonId = ID;
+            PersonId = idea.PersonId;
+
             Loading = true;
+            LoadPage();
             FillDepartmentComboBox();
             FillGenderComboBox();
             Loading = false;
+        }
+
+        public class MyDetails
+        {
+            private int id2;
+
+            public int PersonId {
+                get
+                {
+                    return id2;
+                }
+                set
+                {
+                    id2 = value;
+                }
+            }
+        }
+
+
+        public void LoadPage()
+        {
+            try
+            {
+                this.Cursor = Cursors.Wait;
+                using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
+                {
+                    using (SqlCommand CMD = new SqlCommand(Properties.Resources.S_Person, CN))
+                    {
+                        CMD.CommandType = CommandType.StoredProcedure;
+                        CMD.Parameters.AddWithValue("@BusinessEntityID", PersonId);
+                        
+                        CN.Open();
+                        using (SqlDataReader DR = CMD.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            while (DR.Read())
+                            {
+                                txtFirstName.Text = DR["FirstName"].ToString();
+                                txtMiddleName.Text = DR["MiddleName"].ToString();
+                                txtLastName.Text = DR["LastName"].ToString();
+                                cboGender.SelectedValue = DR["Gender"].ToString();
+                                txtJobTitle.Text = DR["JobTitle"].ToString();
+                                txtLogin.Text = DR["LoginID"].ToString();
+                                txtMail.Text = DR["EmailAddress"].ToString();
+                                txtVestiging.SelectedValue = DR["DepartmentName"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                this.Cursor = null;
+            }
         }
 
         private void FillDepartmentComboBox()
@@ -62,37 +116,6 @@ namespace Helpdesk_v2._0
             cboGender.Items.Add("F");
             cboGender.Items.Add("M");
         }
-
-        // Hier ga ik de ID ophalen die achter mijn combobox zit
-        private Int16 GetID ()
-        {
-            Int16 id = 0;
-
-            using (SqlConnection CN = new SqlConnection(Properties.Settings.Default.CN))
-            {
-                using (SqlCommand CMD = new SqlCommand("select DepartmentID from HumanResources.Department where Name = @Name", CN))
-                {
-                    CN.Open();
-                    CMD.Parameters.Add(new SqlParameter("Name", txtVestiging.Text));
-                    using (SqlDataReader DR = CMD.ExecuteReader(CommandBehavior.CloseConnection))
-                    {
-                        while (DR.Read())
-                        {
-                            id = (Int16)DR["DepartmentID"];
-                        }
-                    }
-                }
-            }
-            return id;
-        }
-
-
-        // Hier ga ik de ID ophalen die achter mijn combobox zit
-        private string GetPersonID()
-        {
-            string Name = txtID.Text;
-            return Name;
-        }
         #endregion
 
         #region EVENTS
@@ -106,17 +129,17 @@ namespace Helpdesk_v2._0
                     {
                         using (SqlDataAdapter DA = new SqlDataAdapter(CMD))
                         {
-                            Int16 DepartmentID = GetID();
                             CMD.CommandType = CommandType.StoredProcedure;
-                            CMD.Parameters.AddWithValue("@id", txtID.Text);
+                            CMD.Parameters.AddWithValue("@id", PersonId);
                             CMD.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
                             CMD.Parameters.AddWithValue("@MiddleName", txtMiddleName.Text);
                             CMD.Parameters.AddWithValue("@LastName", txtLastName.Text);
                             CMD.Parameters.AddWithValue("@LoginID", txtLogin.Text);
-                            CMD.Parameters.AddWithValue("@EmailAddress", txtMail.Text);
                             CMD.Parameters.AddWithValue("@JobTitle", txtJobTitle.Text);
-                            CMD.Parameters.AddWithValue("@DepartmentID", DepartmentID);
                             CMD.Parameters.AddWithValue("@Gender", cboGender.SelectedItem);
+                            CMD.Parameters.AddWithValue("@EmailAddress", txtMail.Text);
+                            CMD.Parameters.AddWithValue("@DepartmentName", txtVestiging.SelectedItem);
+                            CMD.Parameters.AddWithValue("@DepartmentID", 0);
                             CMD.Parameters.AddWithValue("@ReturnValue", 0);
                             CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
 

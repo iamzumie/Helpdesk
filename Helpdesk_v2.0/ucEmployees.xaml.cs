@@ -43,7 +43,7 @@ namespace Helpdesk_v2._0
             LoadDataGrid();
         }
 
-        private void LoadDataGrid()
+        public void LoadDataGrid()
         {
             try
             {

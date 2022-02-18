@@ -97,6 +97,15 @@ namespace Helpdesk_v2._0.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to S_Person.
+        /// </summary>
+        internal static string S_Person {
+            get {
+                return ResourceManager.GetString("S_Person", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to S_SortVestiging.
         /// </summary>
         internal static string S_SortVestiging {
