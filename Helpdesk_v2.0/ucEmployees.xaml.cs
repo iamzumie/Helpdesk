@@ -112,7 +112,7 @@ namespace Helpdesk_v2._0
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                // Get the SelectedItem
+                // Get the SelectedItem (row) from the datagridview
                 MyItem classObj = dgResults.SelectedItem as MyItem;
 
                 // Push the BindingId to the new Window

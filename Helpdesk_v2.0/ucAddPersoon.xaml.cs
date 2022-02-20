@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -89,8 +79,8 @@ namespace Helpdesk_v2._0
 
         private void ControlsLeegmaken()
         {
-            cboDepartment.SelectedItem = -1;
-            cboGender.SelectedItem = -1;
+            cboDepartment.SelectedIndex = -1;
+            cboGender.SelectedIndex = -1;
             txtFirstName.Text = string.Empty;
             txtMiddleName.Text = string.Empty;
             txtLastName.Text = string.Empty;
@@ -120,7 +110,11 @@ namespace Helpdesk_v2._0
                             CMD.Parameters.AddWithValue("@MiddleName", txtMiddleName.Text);
                             CMD.Parameters.AddWithValue("@LastName", txtLastName.Text);
                             CMD.Parameters.AddWithValue("@PersonGUID", guid);
-
+                            CMD.Parameters.AddWithValue("@LoginID", txtLogin.Text);
+                            CMD.Parameters.AddWithValue("@JobTitle", txtJobTitle.Text);
+                            CMD.Parameters.AddWithValue("@MailAddress", txtEmail.Text);
+                            CMD.Parameters.AddWithValue("@Gender", cboGender.SelectedValue);
+                            CMD.Parameters.AddWithValue("@DepartmentID", cboDepartment.SelectedValue);
                             CMD.Parameters.AddWithValue("@ReturnValue", 0);
                             CMD.Parameters["@ReturnValue"].Direction = ParameterDirection.Output;
 
