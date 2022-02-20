@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Helpdesk_v2._0
@@ -145,10 +146,12 @@ namespace Helpdesk_v2._0
 
                             DT = new DataTable();
                             DA.Fill(DT);
-                        
+
                             if ((int)CMD.Parameters["@ReturnValue"].Value == 999)
                             {
+                                DialogResult = true;
                                 this.Close();
+
                             }
                             else if ((int)CMD.Parameters["@ReturnValue"].Value == 998)
                             {
@@ -174,5 +177,6 @@ namespace Helpdesk_v2._0
             this.Close();
         }
         #endregion
+
     }
 }

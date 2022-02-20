@@ -116,10 +116,17 @@ namespace Helpdesk_v2._0
                 MyItem classObj = dgResults.SelectedItem as MyItem;
 
                 // Push the BindingId to the new Window
-                DetailsWindow EmployeePage = new DetailsWindow(Convert.ToInt32(classObj.BindingId));
-                EmployeePage.Show();
+                DetailsWindow detailWindow = new DetailsWindow(Convert.ToInt32(classObj.BindingId));
+                detailWindow.ShowDialog();
+
+                // When Employee page gets updated, it will reload the DataGrid
+                if (detailWindow.DialogResult == true)
+                {
+                    LoadDataGrid();
+                }
             }
         }
+      
         #endregion
     }
 }
