@@ -35,7 +35,14 @@
 				 x:Name="txtSearch"
 				 Text="Search"
 				 Padding="5,0"
-				 GotFocus="txtSearch_GotFocus" />
+				 GotFocus="txtSearch_GotFocus">
+			<TextBox.Resources>
+				<Style TargetType="{x:Type Border}">
+					<Setter Property="CornerRadius"
+							Value="3" />
+				</Style>
+			</TextBox.Resources>
+		</TextBox>
 
 		<Button Content="Zoek"
 				Width="75"
@@ -65,7 +72,7 @@
 
 		<StackPanel Orientation="Horizontal"
 					Grid.Row="2"
-					Grid.Column="1" Grid.ColumnSpan="4" Visibility="Hidden" x:Name="stkTest">
+					Grid.Column="1" Grid.ColumnSpan="4" Visibility="Collapsed" x:Name="stkTest">
 			<Label Grid.Column="1"
 				   Grid.Row="1"
 				   Margin="5,5,0,0">Naam</Label>
