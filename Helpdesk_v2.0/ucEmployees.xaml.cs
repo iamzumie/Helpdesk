@@ -33,7 +33,7 @@ namespace Helpdesk_v2._0
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            txtSearch.Focus();
+            //txtSearch.Focus();
             LoadDataGrid();
         }
 
@@ -126,7 +126,20 @@ namespace Helpdesk_v2._0
                 }
             }
         }
-      
+
         #endregion
+
+        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            stkTest.Visibility = Visibility.Visible;
+        }
+
+
+        private void txtSearch_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            tb.Text = string.Empty;
+            tb.GotFocus -= txtSearch_GotFocus;
+        }
     }
 }

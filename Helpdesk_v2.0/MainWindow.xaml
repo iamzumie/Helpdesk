@@ -8,7 +8,7 @@
         mc:Ignorable="d"
 		Title="Tectum Group Helpdesk v3.1"
 		TextBlock.TextAlignment="Center"
-		Background="#FFABABAB"
+		Background="#FF91CBF9"
 		Height="650"
 		Width="800">
 
@@ -18,6 +18,10 @@
 			<RowDefinition Height="21"></RowDefinition>
 			<RowDefinition Height="auto"></RowDefinition>
 		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition></ColumnDefinition>
+		</Grid.ColumnDefinitions>
 
 		<DockPanel LastChildFill="True">
 			<Menu DockPanel.Dock="Top">
