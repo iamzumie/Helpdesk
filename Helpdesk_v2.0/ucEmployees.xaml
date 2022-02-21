@@ -27,19 +27,20 @@
 		<TextBox Width="525"
 				 Grid.Column="1"
 				 Margin="5"
-				 Height="25"
+				 Height="30"
 				 HorizontalAlignment="Left"
 				 VerticalContentAlignment="Center"
 				 TextAlignment="Left"
 				 Grid.Row="1"
 				 x:Name="txtSearch"
-				 Text="Search"
+				 Foreground="Gray"
 				 Padding="5,0"
-				 GotFocus="txtSearch_GotFocus">
+				 GotFocus="txtSearch_GotFocus"
+				 Background="White">
 			<TextBox.Resources>
 				<Style TargetType="{x:Type Border}">
 					<Setter Property="CornerRadius"
-							Value="3" />
+							Value="2" />
 				</Style>
 			</TextBox.Resources>
 		</TextBox>
@@ -47,7 +48,7 @@
 		<Button Content="Zoek"
 				Width="75"
 				HorizontalAlignment="Left"
-				Height="25"
+				Height="30"
 				x:Name="btnZoek"
 				Grid.Column="2"
 				Grid.Row="1"
@@ -55,7 +56,14 @@
 				IsDefault="True"
 				Click="btnZoek_Click"
 				Background="#FF2175E4"
-				Foreground="White" />
+				Foreground="White">
+			<Button.Resources>
+				<Style TargetType="{x:Type Border}">
+					<Setter Property="CornerRadius"
+							Value="2" />
+				</Style>
+			</Button.Resources>
+		</Button>
 
 		<Label 
 			   Width="85"
@@ -63,7 +71,6 @@
 			   Height="25"
 			   x:Name="btnAdvanceerd"
 			   Grid.Column="3"
-			
 			   Foreground="#0000EE"
 			   Grid.Row="1">
 				<TextBlock Text="Geavanceerd" 
@@ -73,9 +80,9 @@
 		<StackPanel Orientation="Horizontal"
 					Grid.Row="2"
 					Grid.Column="1" Grid.ColumnSpan="4" Visibility="Collapsed" x:Name="stkTest">
-			<Label Grid.Column="1"
+			<ComboBox Grid.Column="1"
 				   Grid.Row="1"
-				   Margin="5,5,0,0">Naam</Label>
+				   Margin="5">Naam</ComboBox>
 
 			<TextBox Width="475"
 					 Height="25"

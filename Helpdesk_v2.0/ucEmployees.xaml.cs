@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Data.SqlClient;
 using System.Data;
+using System.Windows.Media;
 
 namespace Helpdesk_v2._0
 {
@@ -33,8 +34,8 @@ namespace Helpdesk_v2._0
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //txtSearch.Focus();
             LoadDataGrid();
+            txtSearch.Text = "Search";
         }
 
         // When you press the Search button
@@ -139,6 +140,7 @@ namespace Helpdesk_v2._0
         {
             TextBox tb = (TextBox)sender;
             tb.Text = string.Empty;
+            txtSearch.Foreground = new SolidColorBrush(Colors.Black);
             tb.GotFocus -= txtSearch_GotFocus;
         }
     }

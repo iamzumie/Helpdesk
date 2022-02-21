@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Helpdesk_v2._0"
         mc:Ignorable="d"
-		Background="White"
+		Background="#FF91CBF9"
         Title="DetailsWindow" Height="450" Width="600">
 	
     <Grid>
